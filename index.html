@@ -159,7 +159,34 @@ body {
   user-select: none;
 }
 
+.top-bar {
+  background: #7a4a1e;
+  color: #fff;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 10px 0;
+  font-size: 15px;
+  font-weight: bold;
+}
 
+.marquee {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 18s linear infinite;
+}
+
+.marquee span {
+  margin: 0 40px;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
 
   </style>
   <style>@view-transition { navigation: auto; }</style>
@@ -210,6 +237,15 @@ function scrollToTop() {
   });
 }
 </script>
+
+<div class="top-bar">
+  <div class="marquee">
+    <span>☕ لكل طعم حكاية</span>
+    <span>🔥 اطلب الآن واحصل على الخصم</span>
+    <span>🌱 رايحين… أصل الياميش</span>
+    <span>🚚 توصيل سريع لجميع المحافظات</span>
+  </div>
+</div>
 
 
  <body class="h-full bg-gray-50"><!-- Header -->
@@ -306,7 +342,8 @@ function scrollToTop() {
     <!-- Category 1: Dates -->
    <section class="max-w-7xl mx-auto mb-20" id="dates-section">
     <h3 class="text-3xl md:text-4xl font-black text-center mb-12" style="color: var(--text-dark);" id="category-1-title">🌴 التمور الفاخرة</h3>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"><!-- Date Product 1 -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="dates">
+      <!-- Date Product 1 -->
      <div class="product-card bg-white rounded-2xl p-6 shadow-lg">
       <div class="text-6xl mb-4 text-center">
 <img src="images (9).jpg" alt="">
@@ -461,7 +498,7 @@ function scrollToTop() {
     </section><!-- Category 4: cartons-->
    <section class="max-w-7xl mx-auto mb-20" id="cartons-section">
     <h3 class="text-3xl md:text-4xl font-black text-center mb-12" style="color: var(--text-dark);" id="category-2-title">🌴كراتين تمور</h3>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="boxes">
      <!-- cartons Product 1 -->
 <div class="product-card bg-white rounded-2xl p-6 shadow-lg">
 
@@ -951,7 +988,7 @@ function scrollToTop() {
    </section><!-- Category 2: Nuts -->
    <section class="max-w-7xl mx-auto mb-20" id="nuts-section">
     <h3 class="text-3xl md:text-4xl font-black text-center mb-12" style="color: var(--text-dark);" id="category-2-title">🥜  مكسرات محمصه</h3>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="nuts_roasted">
       <!-- Nut Product 1 -->
      <div class="product-card bg-white rounded-2xl p-6 shadow-lg">
       <div class="text-6xl mb-4 text-center">
@@ -1358,7 +1395,8 @@ function scrollToTop() {
     </section><!-- Category 3: Raw-->
    <section class="max-w-7xl mx-auto mb-20" id="nuts-section">
     <h3 class="text-3xl md:text-4xl font-black text-center mb-12" style="color: var(--text-dark);" id="category-2-title">🥜  مكسرات نيه</h3>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"><!-- Nut Product 1 -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="nuts_raw">
+      <!-- Nut Product 1 -->
      <div class="product-card bg-white rounded-2xl p-6 shadow-lg">
       <div class="text-6xl mb-4 text-center">
           <img src="images (20).jpg" alt=" " >
@@ -1711,7 +1749,7 @@ function scrollToTop() {
     </section><!-- Category 4: Yamish -->
    <section class="max-w-7xl mx-auto mb-20" id="yamish-section">
     <h3 class="text-3xl md:text-4xl font-black text-center mb-12" style="color: var(--text-dark);" id="category-3-title">🍬 الياميش </h3>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="yamish">
       <!-- Yamish Product 1 -->
      <div class="product-card bg-white rounded-2xl p-6 shadow-lg">
       <div class="text-6xl mb-4 text-center">
@@ -3398,5 +3436,31 @@ document.querySelectorAll('.add-to-cart').forEach(btn => {
     updateCart();
 
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bf0a52f4575e179',t:'MTc2ODU5ODMwNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bf0a52f4575e179',t:'MTc2ODU5ODMwNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+ 
+<script>
+const SHEET_ID = "1RDl9hV43BjKsqc-vuhj6uj97kZhtPhfh3yFqWpMQHK0";
+const URL = `https://opensheet.elk.sh/${SHEET_ID}/Sheet1`;
+
+fetch(URL)
+  .then(res => res.json())
+  .then(data => {
+    data.forEach(item => {
+      const container = document.getElementById(item.category);
+      if (!container) return;
+
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <div class="border rounded-xl p-4 shadow">
+          <img src="${item.image}" class="w-full h-48 object-cover rounded">
+          <h4 class="font-bold mt-3">${item.name}</h4>
+          <p class="text-[#b17c33] font-bold">${item.price} جنيه</p>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+  });
+</script>
+
+ </body>
  </html>
