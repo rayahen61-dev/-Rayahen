@@ -2,191 +2,150 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>إتمام الطلب | رياحين</title>
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f7f7f7;
-      margin: 0;
-      padding: 0;
-    }
-
-    .container {
-      max-width: 500px;
-      margin: 40px auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-    }
-
-    textarea {
-      resize: none;
-    }
-
-    .summary {
-      background: #f1f1f1;
-      padding: 15px;
-      border-radius: 8px;
-      margin-top: 20px;
-      font-size: 14px;
-    }
-
-    .btn {
-      margin-top: 20px;
-      width: 100%;
-      padding: 15px;
-      background: #25D366;
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      background: #1ebe5d;
-    }
-
-    .note {
-      text-align: center;
-      font-size: 13px;
-      margin-top: 15px;
-      color: #555;
-    }
-  </style>
+  <title>إتمام الطلب - رياحين</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
+<body class="bg-gray-100 p-4">
 
-<body>
+<div class="max-w-xl mx-auto bg-white p-5 rounded-xl shadow">
 
-<div class="container">
-  <h2>🛒 إتمام الطلب</h2>
+  <h2 class="text-2xl font-bold text-center mb-4">🧾 إتمام الطلب</h2>
 
-  <label>الاسم</label>
-  <input type="text" id="name" placeholder="اكتب اسمك">
-
-  <label>رقم الموبايل</label>
-  <input type="tel" id="phone" placeholder="01XXXXXXXXX">
-
-  <label>العنوان</label>
-  <textarea id="address" rows="3" placeholder="العنوان بالتفصيل"></textarea>
-
-  <div class="summary">
-    <strong>ملخص الطلب:</strong>
-    <div id="orderSummary">جارٍ تحميل الطلب...</div>
-    <hr>
-    <strong>الإجمالي:</strong>
-    <span id="totalPrice">0</span> جنيه
+  <!-- بيانات العميل -->
+  <div class="space-y-3">
+    <input id="name" type="text" placeholder="الاسم" class="w-full border p-3 rounded">
+    <input id="phone" type="tel" placeholder="رقم الهاتف" class="w-full border p-3 rounded">
+    <input id="address" type="text" placeholder="العنوان" class="w-full border p-3 rounded">
   </div>
 
-  <button class="btn" onclick="sendWhatsApp()">📲 إرسال الطلب على واتساب</button>
-
-  <div class="note">
-    🔒 بياناتك آمنة – الطلب يتم عبر واتساب فقط
+  <!-- الفرع -->
+  <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+    <strong>📍 الفرع:</strong> 6 أكتوبر – الحصري – مول زمزم
   </div>
+
+  <!-- طريقة الدفع -->
+  <div class="mt-4">
+    <h3 class="font-bold mb-2">💳 طريقة الدفع</h3>
+    <div class="flex gap-3">
+      <button onclick="selectPayment('instapay')" class="pay-btn px-4 py-2 border rounded">إنستاباي</button>
+      <button onclick="selectPayment('cash')" class="pay-btn px-4 py-2 border rounded">كاش</button>
+    </div>
+
+    <div id="instapay-box" class="hidden mt-3 p-3 bg-green-50 rounded text-sm">
+      رقم إنستاباي: <strong>01207772789</strong>
+    </div>
+  </div>
+
+  <!-- ملخص الطلب -->
+  <div class="mt-6 border rounded-xl p-4 bg-gray-50">
+    <h3 class="font-bold text-lg mb-3 text-center">🧾 ملخص الطلب</h3>
+    <div id="summary-items" class="space-y-2 text-sm"></div>
+
+    <div class="border-t mt-3 pt-3 text-center font-bold">
+      الإجمالي: <span id="summary-total">0</span> جنيه
+    </div>
+  </div>
+
+  <!-- زر الإرسال -->
+  <button onclick="sendWhatsApp()"
+    class="w-full mt-6 py-4 bg-green-600 text-white rounded-xl font-bold text-lg">
+    إرسال الطلب عبر واتساب
+  </button>
+
 </div>
 
 <script>
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+/* ====== تحميل السلة ====== */
+const cart = JSON.parse(localStorage.getItem("cart")) || [];
+let paymentMethod = "";
 
-  const summary = document.getElementById("orderSummary");
-  const totalEl = document.getElementById("totalPrice");
-
-  let total = 0;
+/* ====== ملخص الطلب ====== */
+function renderSummary() {
+  const itemsDiv = document.getElementById("summary-items");
+  const totalSpan = document.getElementById("summary-total");
 
   if (cart.length === 0) {
-    summary.innerHTML = "السلة فارغة";
-  } else {
-    summary.innerHTML = "";
-
-    cart.forEach(item => {
-      const itemTotal = item.unit
-        ? item.price * item.quantity
-        : (item.price * item.quantity) / 1000;
-
-      total += itemTotal;
-
-      summary.innerHTML += `
-        <div>
-          ${item.product} × ${item.quantity} ${item.unit || "جرام"}
-          — ${itemTotal.toFixed(2)} جنيه
-        </div>
-      `;
-    });
-  }
-
-  totalEl.textContent = total.toFixed(2);
-
-</script>
-<script>
-function sendWhatsApp() {
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const address = document.getElementById("address").value.trim();
-
-  if (!name || !phone || !address) {
-    alert("من فضلك املأ كل البيانات");
+    itemsDiv.innerHTML = "<p class='text-center text-gray-500'>السلة فارغة</p>";
+    totalSpan.textContent = "0";
     return;
   }
 
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let total = 0;
+  itemsDiv.innerHTML = "";
 
+  cart.forEach(item => {
+    const itemTotal = item.unit
+      ? item.price * item.quantity
+      : (item.price * item.quantity) / 1000;
+
+    total += itemTotal;
+
+    itemsDiv.innerHTML += `
+      <div class="flex justify-between">
+        <span>${item.product} × ${item.quantity}</span>
+        <span>${itemTotal.toFixed(2)} ج</span>
+      </div>
+    `;
+  });
+
+  totalSpan.textContent = total.toFixed(2);
+}
+
+/* ====== اختيار طريقة الدفع ====== */
+function selectPayment(type) {
+  paymentMethod = type;
+
+  document.querySelectorAll(".pay-btn").forEach(b => b.classList.remove("bg-green-600","text-white"));
+  event.target.classList.add("bg-green-600","text-white");
+
+  document.getElementById("instapay-box").classList.toggle("hidden", type !== "instapay");
+}
+
+/* ====== إرسال واتساب ====== */
+function sendWhatsApp() {
   if (cart.length === 0) {
     alert("السلة فارغة");
     return;
   }
 
+  const name = document.getElementById("name").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const address = document.getElementById("address").value.trim();
+
+  if (!name || !phone || !address || !paymentMethod) {
+    alert("من فضلك أكمل البيانات واختر طريقة الدفع");
+    return;
+  }
+
+  let message = `🌙طلب جديد من محمصة رياحين🌙%0A%0A`;
+  message += `الاسم: ${name}%0A`;
+  message += `الهاتف: ${phone}%0A`;
+  message += `العنوان: ${address}%0A`;
+  message += `الفرع: 6 أكتوبر – الحصري – مول زمزم%0A%0A`;
+  message += `🛒 الطلب:%0A`;
+
   let total = 0;
-  let itemsText = "";
 
   cart.forEach(item => {
-    const itemTotal = item.price * item.quantity;
-    total += itemTotal;
+    const itemTotal = item.unit
+      ? item.price * item.quantity
+      : (item.price * item.quantity) / 1000;
 
-    itemsText += `- ${item.product} × ${item.quantity} = ${itemTotal} جنيه\n`;
+    total += itemTotal;
+    message += `- ${item.product} × ${item.quantity} = ${itemTotal.toFixed(2)} جنيه%0A`;
   });
 
-  const message = `
-طلب جديد من موقع رياحين
------------------------
-الاسم: ${name}
-الهاتف: ${phone}
-العنوان: ${address}
+  const now = new Date();
+  message += `%0Aالإجمالي: ${total.toFixed(2)} جنيه%0A`;
+  message += `طريقة الدفع: ${paymentMethod === "instapay" ? "إنستاباي" : "كاش"}%0A`;
+  message += `📅 ${now.toLocaleDateString("ar-EG")} ⏰ ${now.toLocaleTimeString("ar-EG")}%0A%0A`;
+  message += `شكراً لكم وكل عام وأنتم بخير!🌙✨`;
 
-الطلب:
-${itemsText}
-
-الإجمالي: ${total} جنيه
-`;
-
-  /* 🔴 حط رقم الواتساب هنا */
-   const whatsappNumber = "201207772789"; // بدون + ولا مسافات
-
-  const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-  window.open(url, "_blank");
+  window.open(`https://wa.me/2001207772789?text=${message}`, "_blank");
 }
+
+/* تشغيل */
+renderSummary();
 </script>
 
 </body>
