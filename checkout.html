@@ -1,109 +1,146 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>إتمام الطلب - رياحين</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إتمام الطلب | رياحين</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+  margin: 0;
+}
+.container {
+  max-width: 520px;
+  margin: 20px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 14px;
+}
+h2 { text-align: center; }
+label { font-weight: bold; margin-top: 12px; display: block; }
+.req { color: red; }
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+.summary {
+  background: #f1f1f1;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 15px;
+}
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.whatsapp { background: #25D366; color: #fff; }
+.maps { background: #4285F4; color: #fff; }
+.payment-box { display: flex; gap: 10px; margin-top: 10px; }
+.payment-box button {
+  flex: 1;
+  background: #eee;
+}
+.payment-box button.active {
+  background: #b17c33;
+  color: #fff;
+}
+.note { font-size: 13px; color: #555; text-align: center; }
+.instapay { display:none; margin-top:10px; background:#f9f9f9; padding:10px; border-radius:8px; }
+</style>
 </head>
-<body class="bg-gray-100 p-4">
 
-<div class="max-w-xl mx-auto bg-white p-5 rounded-xl shadow">
+<body>
 
-  <h2 class="text-2xl font-bold text-center mb-4">🧾 إتمام الطلب</h2>
+<div class="container">
+<h2>🛒 إتمام الطلب</h2>
 
-  <!-- بيانات العميل -->
-  <div class="space-y-3">
-    <input id="name" type="text" placeholder="الاسم" class="w-full border p-3 rounded">
-    <input id="phone" type="tel" placeholder="رقم الهاتف" class="w-full border p-3 rounded">
-    <input id="address" type="text" placeholder="العنوان" class="w-full border p-3 rounded">
-  </div>
+<label>الاسم <span class="req">*</span></label>
+<input id="name" required>
 
-  <!-- الفرع -->
-  <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
-    <strong>📍 الفرع:</strong> 6 أكتوبر – الحصري – مول زمزم
-  </div>
+<label>رقم الهاتف <span class="req">*</span></label>
+<input id="phone" required>
 
-  <!-- طريقة الدفع -->
-  <div class="mt-4">
-    <h3 class="font-bold mb-2">💳 طريقة الدفع</h3>
-    <div class="flex gap-3">
-      <button onclick="selectPayment('instapay')" class="pay-btn px-4 py-2 border rounded">إنستاباي</button>
-      <button onclick="selectPayment('cash')" class="pay-btn px-4 py-2 border rounded">كاش</button>
-    </div>
+<label>العنوان <span class="req">*</span></label>
+<textarea id="address" rows="2" required></textarea>
 
-   <!-- <div id="instapay-box" class="hidden mt-3 p-3 bg-green-50 rounded text-sm">
-      رقم إنستاباي: <strong>01207772789</strong>
-    </div>
-  </div>
+<button class="maps" onclick="openMaps()">📍 تحديد الموقع من Google Maps</button>
+
+<label>💳 طريقة الدفع <span class="req">*</span></label>
+<div class="payment-box">
+  <button onclick="selectPayment('كاش')">كاش</button>
+  <button onclick="selectPayment('Instapay')">Instapay</button>
+</div>
+
+<!-- <div class="instapay" id="instapayBox">
+  رقم Instapay: <b>01207772789</b>
+</div>
 -->
-  <!-- ملخص الطلب -->
-  <div class="mt-6 border rounded-xl p-4 bg-gray-50">
-    <h3 class="font-bold text-lg mb-3 text-center">🧾 ملخص الطلب</h3>
-    <div id="summary-items" class="space-y-2 text-sm"></div>
+<label>📝 ملاحظات للتوصيل</label>
+<textarea id="notes" rows="2" placeholder="مثلاً: الاتصال قبل الوصول"></textarea>
 
-    <div class="border-t mt-3 pt-3 text-center font-bold">
-      الإجمالي: <span id="summary-total">0</span> جنيه
-    </div>
-  </div>
+<div class="summary">
+  <b>📦 ملخص الطلب:</b>
+  <div id="summary"></div>
+  <hr>
+  <b>الإجمالي:</b> <span id="total">0</span> جنيه
+</div>
 
-  <!-- زر الإرسال -->
-  <button onclick="sendWhatsApp()"
-    class="w-full mt-6 py-4 bg-green-600 text-white rounded-xl font-bold text-lg">
-    إرسال الطلب عبر واتساب
-  </button>
+<button class="whatsapp" onclick="sendOrder()">📲 إرسال الطلب</button>
 
+<p class="note">شكراً لكم وكل عام وأنتم بخير 🌙✨</p>
 </div>
 
 <script>
-/* ====== تحميل السلة ====== */
 const cart = JSON.parse(localStorage.getItem("cart")) || [];
 let paymentMethod = "";
 
-/* ====== ملخص الطلب ====== */
-function renderSummary() {
-  const itemsDiv = document.getElementById("summary-items");
-  const totalSpan = document.getElementById("summary-total");
+const summaryEl = document.getElementById("summary");
+const totalEl = document.getElementById("total");
 
-  if (cart.length === 0) {
-    itemsDiv.innerHTML = "<p class='text-center text-gray-500'>السلة فارغة</p>";
-    totalSpan.textContent = "0";
-    return;
-  }
+let total = 0;
 
-  let total = 0;
-  itemsDiv.innerHTML = "";
-
+if (cart.length === 0) {
+  summaryEl.innerHTML = "❌ السلة فارغة";
+} else {
   cart.forEach(item => {
-    const itemTotal = item.unit
+    let itemTotal = item.unit
       ? item.price * item.quantity
       : (item.price * item.quantity) / 1000;
 
     total += itemTotal;
 
-    itemsDiv.innerHTML += `
-      <div class="flex justify-between">
-        <span>${item.product} × ${item.quantity}</span>
-        <span>${itemTotal.toFixed(2)} ج</span>
-      </div>
-    `;
+    summaryEl.innerHTML += `
+      <div>• ${item.product} × ${item.quantity} ${item.unit || "جرام"}
+      = ${itemTotal.toFixed(2)} جنيه</div>`;
   });
-
-  totalSpan.textContent = total.toFixed(2);
 }
 
-/* ====== اختيار طريقة الدفع ====== */
+totalEl.textContent = total.toFixed(2);
+
 function selectPayment(type) {
   paymentMethod = type;
-
-  document.querySelectorAll(".pay-btn").forEach(b => b.classList.remove("bg-green-600","text-white"));
-  event.target.classList.add("bg-green-600","text-white");
-
-  document.getElementById("instapay-box").classList.toggle("hidden", type !== "instapay");
+  document.querySelectorAll(".payment-box button").forEach(b => b.classList.remove("active"));
+  event.target.classList.add("active");
+  document.getElementById("instapayBox").style.display =
+    type === "Instapay" ? "block" : "none";
 }
 
-/* ====== إرسال واتساب ====== */
-function sendWhatsApp() {
+function openMaps() {
+  window.open("https://www.google.com/maps", "_blank");
+}
+
+function sendOrder() {
   if (cart.length === 0) {
     alert("السلة فارغة");
     return;
@@ -112,45 +149,46 @@ function sendWhatsApp() {
   const name = document.getElementById("name").value.trim();
   const phone = document.getElementById("phone").value.trim();
   const address = document.getElementById("address").value.trim();
+  const notes = document.getElementById("notes").value.trim();
 
   if (!name || !phone || !address || !paymentMethod) {
-    alert("من فضلك أكمل البيانات واختر طريقة الدفع");
+    alert("من فضلك اكمل البيانات المطلوبة");
     return;
   }
 
-  let message = `🌙طلب جديد من محمصة رياحين🌙%0A%0A`;
-  message += `الاسم: ${name}%0A`;
-  message += `الهاتف: ${phone}%0A`;
-  message += `العنوان: ${address}%0A`;
-  message += `الفرع: 6 أكتوبر – الحصري – مول زمزم%0A%0A`;
-  message += `🛒 الطلب:%0A`;
-
-  let total = 0;
+  let message = `🌙 طلب جديد من محمصه رياحين 🌙\n\n`;
+  message += `الاسم: ${name}\n`;
+  message += `الهاتف: ${phone}\n`;
+  message += `العنوان: ${address}\n`;
+  message += `طريقة الدفع: ${paymentMethod}\n\n`;
+  message += `📦 الطلب:\n`;
 
   cart.forEach(item => {
-    const itemTotal = item.unit
+    let price = item.unit
       ? item.price * item.quantity
       : (item.price * item.quantity) / 1000;
 
-    total += itemTotal;
-    message += `- ${item.product} × ${item.quantity} = ${itemTotal.toFixed(2)} جنيه%0A`;
+    message += `- ${item.product} × ${item.quantity} = ${price.toFixed(2)} جنيه\n`;
   });
 
-  const now = new Date();
-  message += `%0Aالإجمالي: ${total.toFixed(2)} جنيه%0A`;
-  message += `طريقة الدفع: ${paymentMethod === "instapay" ? "إنستاباي" : "كاش"}%0A`;
-  message += `📅 ${now.toLocaleDateString("ar-EG")} ⏰ ${now.toLocaleTimeString("ar-EG")}%0A%0A`;
-  message += `شكراً لكم وكل عام وأنتم بخير!🌙✨`;
+  message += `\n💵 الإجمالي: ${total.toFixed(2)} جنيه\n`;
+  if (notes) message += `📝 ملاحظات: ${notes}\n`;
+  message += `\nشكراً لكم وكل عام وأنتم بخير 🌙✨`;
 
-  window.open(`https://wa.me/2001207772789?text=${message}`, "_blank");
+  const url = `https://wa.me/201207772789?text=${encodeURIComponent(message)}`;
+  window.open(url, "_blank");
+
+  fetch("https://script.google.com/macros/s/AKfycbzCybPEI_7__NgAcQcG0O0mzGs4wGNAPAFezf7Bn5KmvEHHBhbODMI2qdjdwmeQaxYc/exec", {
+    method: "POST",
+    body: JSON.stringify({
+      name, phone, address,
+      payment: paymentMethod,
+      order: message,
+      total: total.toFixed(2)
+    })
+  });
 }
-
-/* تشغيل */
-renderSummary();
 </script>
 
 </body>
 </html>
-
-
-
