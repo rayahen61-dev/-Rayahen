@@ -3,60 +3,72 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>إتمام الطلب | رياحين</title>
+<title>إتمام الطلب</title>
 
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background: #f5f5f5;
-  margin: 0;
+body{
+  font-family: Arial;
+  background:#f7f7f7;
 }
-.container {
-  max-width: 520px;
-  margin: 20px auto;
-  background: #fff;
-  padding: 20px;
-  border-radius: 14px;
+.container{
+  max-width:500px;
+  margin:30px auto;
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
 }
-h2 { text-align: center; }
-label { font-weight: bold; margin-top: 12px; display: block; }
-.req { color: red; }
-input, textarea {
-  width: 100%;
-  padding: 12px;
-  margin-top: 6px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  font-size: 15px;
+label{font-weight:bold;margin-top:10px;display:block}
+input,textarea{
+  width:100%;
+  padding:10px;
+  margin-top:5px;
+  border-radius:8px;
+  border:1px solid #ccc;
 }
-.summary {
-  background: #f1f1f1;
-  padding: 15px;
-  border-radius: 10px;
-  margin-top: 15px;
+input.error, textarea.error{
+  border:2px solid red;
 }
-button {
-  width: 100%;
-  padding: 14px;
-  margin-top: 15px;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  cursor: pointer;
+.summary{
+  background:#f1f1f1;
+  padding:10px;
+  border-radius:8px;
+  margin-top:15px;
 }
-.whatsapp { background: #25D366; color: #fff; }
-.maps { background: #4285F4; color: #fff; }
-.payment-box { display: flex; gap: 10px; margin-top: 10px; }
-.payment-box button {
-  flex: 1;
-  background: #eee;
+.btn{
+  width:100%;
+  padding:15px;
+  background:#25D366;
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  font-size:16px;
+  margin-top:20px;
+  cursor:pointer;
 }
-.payment-box button.active {
-  background: #b17c33;
-  color: #fff;
+.payment-box{
+  display:flex;
+  gap:10px;
+  margin-top:10px;
 }
-.note { font-size: 13px; color: #555; text-align: center; }
-.instapay { display:none; margin-top:10px; background:#f9f9f9; padding:10px; border-radius:8px; }
+.payment-btn{
+  flex:1;
+  padding:12px;
+  border:1px solid #ccc;
+  border-radius:8px;
+  text-align:center;
+  cursor:pointer;
+}
+.payment-btn.active{
+  background:#25D366;
+  color:#fff;
+  border-color:#25D366;
+}
+.note{
+  color:red;
+  font-size:13px;
+  margin-top:8px;
+  display:none;
+}
 </style>
 </head>
 
@@ -65,128 +77,187 @@ button {
 <div class="container">
 <h2>🛒 إتمام الطلب</h2>
 
-<label>الاسم <span class="req">*</span></label>
-<input id="name" required>
+<label>الاسم *</label>
+<input id="name">
 
-<label>رقم الهاتف <span class="req">*</span></label>
-<input id="phone" required>
+<label>رقم الهاتف *</label>
+<input id="phone" inputmode="numeric">
 
-<label>العنوان <span class="req">*</span></label>
-<textarea id="address" rows="2" required></textarea>
+<label>الحي *</label>
+<input id="district">
 
-<button class="maps" onclick="openMaps()">📍 تحديد الموقع من Google Maps</button>
+<label>المنطقة *</label>
+<input id="area">
 
-<label>💳 طريقة الدفع <span class="req">*</span></label>
+<label>اسم الشارع *</label>
+<input id="street">
+
+<label>رقم المبنى *</label>
+<input id="building">
+
+<label>الدور *</label>
+<input id="floor">
+
+<label>رقم الشقة *</label>
+<input id="apartment">
+
+<label>العنوان بالتفصيل *</label>
+<textarea id="address" rows="3"></textarea>
+
+<label>طريقة الدفع *</label>
 <div class="payment-box">
-  <button onclick="selectPayment('كاش')">كاش</button>
-  <button onclick="selectPayment('Instapay')">Instapay</button>
+  <div class="payment-btn" onclick="selectPayment('كاش', this)">💵 كاش</div>
+  <div class="payment-btn" onclick="selectPayment('انستاباي', this)">💳 Instapay</div>
 </div>
 
-<!-- <div class="instapay" id="instapayBox">
-  رقم Instapay: <b>01207772789</b>
+<div id="instaNote" class="note">
+برجاء إرسال صورة إيصال الدفع 📸
 </div>
--->
-<label>📝 ملاحظات للتوصيل</label>
-<textarea id="notes" rows="2" placeholder="مثلاً: الاتصال قبل الوصول"></textarea>
+
+<label>ملاحظات (اختياري)</label>
+<textarea id="notes" rows="2"></textarea>
 
 <div class="summary">
-  <b>📦 ملخص الطلب:</b>
-  <div id="summary"></div>
-  <hr>
-  <b>الإجمالي:</b> <span id="total">0</span> جنيه
+<strong>📦 ملخص الطلب:</strong>
+<div id="orderSummary"></div>
+<hr>
+<strong>الإجمالي:</strong> <span id="totalPrice">0</span> جنيه
 </div>
 
-<button class="whatsapp" onclick="sendOrder()">📲 إرسال الطلب</button>
-
-<p class="note">شكراً لكم وكل عام وأنتم بخير 🌙✨</p>
+<button class="btn" onclick="sendOrder()">📲 إرسال الطلب واتساب</button>
 </div>
 
 <script>
+/* ================= السلة ================= */
 const cart = JSON.parse(localStorage.getItem("cart")) || [];
-let paymentMethod = "";
-
-const summaryEl = document.getElementById("summary");
-const totalEl = document.getElementById("total");
+const summary = document.getElementById("orderSummary");
+const totalEl = document.getElementById("totalPrice");
 
 let total = 0;
+summary.innerHTML = "";
 
-if (cart.length === 0) {
-  summaryEl.innerHTML = "❌ السلة فارغة";
-} else {
-  cart.forEach(item => {
-    let itemTotal = item.unit
-      ? item.price * item.quantity
-      : (item.price * item.quantity) / 1000;
+cart.forEach(item=>{
+  const itemTotal = item.unit
+    ? item.price * item.quantity
+    : (item.price * item.quantity) / 1000;
 
-    total += itemTotal;
+  total += itemTotal;
 
-    summaryEl.innerHTML += `
-      <div>• ${item.product} × ${item.quantity} ${item.unit || "جرام"}
-      = ${itemTotal.toFixed(2)} جنيه</div>`;
-  });
-}
+  summary.innerHTML += `
+    <div>
+      ${item.product} × ${item.quantity} ${item.unit || "جرام"}
+      = ${itemTotal.toFixed(2)} جنيه
+    </div>
+  `;
+});
 
 totalEl.textContent = total.toFixed(2);
 
-function selectPayment(type) {
-  paymentMethod = type;
-  document.querySelectorAll(".payment-box button").forEach(b => b.classList.remove("active"));
-  event.target.classList.add("active");
-  document.getElementById("instapayBox").style.display =
-    type === "Instapay" ? "block" : "none";
+/* ================= الدفع ================= */
+let paymentMethod = "";
+
+function selectPayment(method, el){
+  paymentMethod = method;
+  document.querySelectorAll(".payment-btn").forEach(b=>b.classList.remove("active"));
+  el.classList.add("active");
+  document.getElementById("instaNote").style.display =
+    method === "انستاباي" ? "block" : "none";
 }
 
-function openMaps() {
-  window.open("https://www.google.com/maps", "_blank");
-}
+/* ================= إرسال الطلب ================= */
+function sendOrder(){
+  const ids = [
+    "name","phone","district","area","street",
+    "building","floor","apartment","address"
+  ];
 
-function sendOrder() {
-  if (cart.length === 0) {
-    alert("السلة فارغة");
-    return;
-  }
-
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const address = document.getElementById("address").value.trim();
-  const notes = document.getElementById("notes").value.trim();
-
-  if (!name || !phone || !address || !paymentMethod) {
-    alert("من فضلك اكمل البيانات المطلوبة");
-    return;
-  }
-
-  let message = `🌙 طلب جديد من محمصه رياحين 🌙\n\n`;
-  message += `الاسم: ${name}\n`;
-  message += `الهاتف: ${phone}\n`;
-  message += `العنوان: ${address}\n`;
-  message += `طريقة الدفع: ${paymentMethod}\n\n`;
-  message += `📦 الطلب:\n`;
-
-  cart.forEach(item => {
-    let price = item.unit
-      ? item.price * item.quantity
-      : (item.price * item.quantity) / 1000;
-
-    message += `- ${item.product} × ${item.quantity} = ${price.toFixed(2)} جنيه\n`;
+  let valid = true;
+  ids.forEach(id=>{
+    const el = document.getElementById(id);
+    el.classList.remove("error");
+    if(!el.value.trim()){
+      el.classList.add("error");
+      valid = false;
+    }
   });
 
-  message += `\n💵 الإجمالي: ${total.toFixed(2)} جنيه\n`;
-  if (notes) message += `📝 ملاحظات: ${notes}\n`;
-  message += `\nشكراً لكم وكل عام وأنتم بخير 🌙✨`;
+  const phone = document.getElementById("phone").value.trim();
+  if(!/^\d{11}$/.test(phone)){
+    document.getElementById("phone").classList.add("error");
+    alert("رقم الهاتف لازم يكون 11 رقم");
+    return;
+  }
 
-  const url = `https://wa.me/201207772789?text=${encodeURIComponent(message)}`;
-  window.open(url, "_blank");
+  if(!paymentMethod){
+    alert("اختر طريقة الدفع");
+    return;
+  }
 
-  fetch("https://script.google.com/macros/s/AKfycbzCybPEI_7__NgAcQcG0O0mzGs4wGNAPAFezf7Bn5KmvEHHBhbODMI2qdjdwmeQaxYc/exec", {
-    method: "POST",
-    body: JSON.stringify({
-      name, phone, address,
+  if(!valid){
+    alert("من فضلك املأ كل البيانات المطلوبة");
+    return;
+  }
+
+  /* ===== البيانات ===== */
+  const nameVal = document.getElementById("name").value.trim();
+  const districtVal = document.getElementById("district").value.trim();
+  const areaVal = document.getElementById("area").value.trim();
+  const streetVal = document.getElementById("street").value.trim();
+  const buildingVal = document.getElementById("building").value.trim();
+  const floorVal = document.getElementById("floor").value.trim();
+  const apartmentVal = document.getElementById("apartment").value.trim();
+  const addressVal = document.getElementById("address").value.trim();
+  const notesVal = document.getElementById("notes").value.trim();
+
+  /* ===== رسالة واتساب ===== */
+  let message = `🌙 طلب جديد من محمصة رياحين 🌙\n\n`;
+  message += `الاسم: ${nameVal}\n`;
+  message += `الهاتف: ${phone}\n`;
+  message += `الحي: ${districtVal}\n`;
+  message += `المنطقة: ${areaVal}\n`;
+  message += `الشارع: ${streetVal}\n`;
+  message += `المبنى: ${buildingVal}\n`;
+  message += `الدور: ${floorVal}\n`;
+  message += `الشقة: ${apartmentVal}\n`;
+  message += `العنوان: ${addressVal}\n`;
+  message += `طريقة الدفع: ${paymentMethod}\n\n📦 الطلب:\n`;
+
+  cart.forEach(item=>{
+    const itemTotal = item.unit
+      ? item.price * item.quantity
+      : (item.price * item.quantity)/1000;
+    message += `- ${item.product} × ${item.quantity} = ${itemTotal.toFixed(2)} جنيه\n`;
+  });
+
+  message += `\nالإجمالي: ${total.toFixed(2)} جنيه`;
+  if(notesVal) message += `\n📝 ملاحظات: ${notesVal}`;
+  message += `\n\nشكراً لكم وكل عام وأنتم بخير 🌙✨`;
+
+  /* ===== Google Sheet ===== */
+  fetch("https://script.google.com/macros/s/AKfycbyb6Qzn9yWoyRnGiQMbQWO8F5n2gTW7Q0DupDcxfqx2_xfz6A6R9l97VkULqrIVyu5M/exec",{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({
+      name: nameVal,
+      phone,
+      district: districtVal,
+      area: areaVal,
+      street: streetVal,
+      building: buildingVal,
+      floor: floorVal,
+      apartment: apartmentVal,
       payment: paymentMethod,
-      order: message,
-      total: total.toFixed(2)
+      notes: notesVal,
+      order: JSON.stringify(cart),
+      total
     })
   });
+
+  /* ===== WhatsApp ===== */
+  window.open(
+    `https://wa.me/201207772789?text=${encodeURIComponent(message)}`,
+    "_blank"
+  );
 }
 </script>
 
