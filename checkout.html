@@ -28,6 +28,13 @@ input,textarea{
 input.error, textarea.error{
   border:2px solid red;
 }
+.row{
+  display:flex;
+  gap:10px;
+}
+.row input{
+  flex:1;
+}
 .summary{
   background:#f1f1f1;
   padding:10px;
@@ -81,7 +88,10 @@ input.error, textarea.error{
 <input id="name">
 
 <label>رقم الهاتف *</label>
-<input id="phone" inputmode="numeric">
+<input id="phone" inputmode="numeric" maxlength="11">
+
+<label>نوع العقار *</label>
+<input id="property" placeholder="شقة / فيلا">
 
 <label>الحي *</label>
 <input id="district">
@@ -92,14 +102,11 @@ input.error, textarea.error{
 <label>اسم الشارع *</label>
 <input id="street">
 
-<label>رقم المبنى *</label>
-<input id="building">
-
-<label>الدور *</label>
-<input id="floor">
-
-<label>رقم الشقة *</label>
-<input id="apartment">
+<div class="row">
+  <input id="building" placeholder="رقم المبنى *">
+  <input id="floor" placeholder="الدور *">
+  <input id="apartment" placeholder="رقم الشقة *">
+</div>
 
 <label>العنوان بالتفصيل *</label>
 <textarea id="address" rows="3"></textarea>
@@ -128,7 +135,7 @@ input.error, textarea.error{
 </div>
 
 <script>
-/* ================= السلة ================= */
+/* ===== السلة ===== */
 const cart = JSON.parse(localStorage.getItem("cart")) || [];
 const summary = document.getElementById("orderSummary");
 const totalEl = document.getElementById("totalPrice");
@@ -137,23 +144,20 @@ let total = 0;
 summary.innerHTML = "";
 
 cart.forEach(item=>{
-  const itemTotal = item.unit
+  let itemTotal = item.unit
     ? item.price * item.quantity
-    : (item.price * item.quantity) / 1000;
+    : (item.price * item.quantity)/1000;
 
   total += itemTotal;
 
   summary.innerHTML += `
-    <div>
-      ${item.product} × ${item.quantity} ${item.unit || "جرام"}
-      = ${itemTotal.toFixed(2)} جنيه
-    </div>
+    <div>${item.product} × ${item.quantity} = ${itemTotal.toFixed(2)} جنيه</div>
   `;
 });
 
 totalEl.textContent = total.toFixed(2);
 
-/* ================= الدفع ================= */
+/* ===== الدفع ===== */
 let paymentMethod = "";
 
 function selectPayment(method, el){
@@ -164,15 +168,19 @@ function selectPayment(method, el){
     method === "انستاباي" ? "block" : "none";
 }
 
-/* ================= إرسال الطلب ================= */
+/* ===== إرسال الطلب ===== */
 function sendOrder(){
-  const ids = [
-    "name","phone","district","area","street",
-    "building","floor","apartment","address"
+
+  const customerName = document.getElementById("name").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+
+  const fields = [
+    "name","phone","property","district","area",
+    "street","building","floor","apartment","address"
   ];
 
   let valid = true;
-  ids.forEach(id=>{
+  fields.forEach(id=>{
     const el = document.getElementById(id);
     el.classList.remove("error");
     if(!el.value.trim()){
@@ -181,10 +189,14 @@ function sendOrder(){
     }
   });
 
-  const phone = document.getElementById("phone").value.trim();
+  if(!valid){
+    alert("من فضلك أدخل البيانات المطلوبة");
+    return;
+  }
+
   if(!/^\d{11}$/.test(phone)){
     document.getElementById("phone").classList.add("error");
-    alert("رقم الهاتف لازم يكون 11 رقم");
+    alert("برجاء إدخال رقم هاتف صالح");
     return;
   }
 
@@ -193,69 +205,49 @@ function sendOrder(){
     return;
   }
 
-  if(!valid){
-    alert("من فضلك املأ كل البيانات المطلوبة");
-    return;
-  }
-
-  /* ===== البيانات ===== */
-  const nameVal = document.getElementById("name").value.trim();
-  const districtVal = document.getElementById("district").value.trim();
-  const areaVal = document.getElementById("area").value.trim();
-  const streetVal = document.getElementById("street").value.trim();
-  const buildingVal = document.getElementById("building").value.trim();
-  const floorVal = document.getElementById("floor").value.trim();
-  const apartmentVal = document.getElementById("apartment").value.trim();
-  const addressVal = document.getElementById("address").value.trim();
-  const notesVal = document.getElementById("notes").value.trim();
-
   /* ===== رسالة واتساب ===== */
-  let message = `🌙 طلب جديد من محمصة رياحين 🌙\n\n`;
-  message += `الاسم: ${nameVal}\n`;
+  let message = `🌙 طلب جديد 🌙\n\n`;
+  message += `الاسم: ${customerName}\n`;
   message += `الهاتف: ${phone}\n`;
-  message += `الحي: ${districtVal}\n`;
-  message += `المنطقة: ${areaVal}\n`;
-  message += `الشارع: ${streetVal}\n`;
-  message += `المبنى: ${buildingVal}\n`;
-  message += `الدور: ${floorVal}\n`;
-  message += `الشقة: ${apartmentVal}\n`;
-  message += `العنوان: ${addressVal}\n`;
-  message += `طريقة الدفع: ${paymentMethod}\n\n📦 الطلب:\n`;
+  message += `نوع العقار: ${property.value}\n`;
+  message += `العنوان: ${district.value} - ${area.value} - ${street.value}\n`;
+  message += `مبنى: ${building.value} - دور: ${floor.value} - شقة: ${apartment.value}\n`;
+  message += `الدفع: ${paymentMethod}\n\n📦 الطلب:\n`;
 
   cart.forEach(item=>{
-    const itemTotal = item.unit
+    let itemTotal = item.unit
       ? item.price * item.quantity
       : (item.price * item.quantity)/1000;
     message += `- ${item.product} × ${item.quantity} = ${itemTotal.toFixed(2)} جنيه\n`;
   });
 
   message += `\nالإجمالي: ${total.toFixed(2)} جنيه`;
-  if(notesVal) message += `\n📝 ملاحظات: ${notesVal}`;
-  message += `\n\nشكراً لكم وكل عام وأنتم بخير 🌙✨`;
+  if(notes.value) message += `\n📝 ملاحظات: ${notes.value}`;
 
   /* ===== Google Sheet ===== */
-  fetch("https://script.google.com/macros/s/AKfycbyb6Qzn9yWoyRnGiQMbQWO8F5n2gTW7Q0DupDcxfqx2_xfz6A6R9l97VkULqrIVyu5M/exec",{
+  fetch("https://script.google.com/macros/s/AKfycbxdfPXKl6aWP_aB7ZLTwuv3HLzRkPCVHErZmGBEokXZshaLZYMsxrnyJh5eGhI66kZ_",{
     method:"POST",
     headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({
-      name: nameVal,
-      phone,
-      district: districtVal,
-      area: areaVal,
-      street: streetVal,
-      building: buildingVal,
-      floor: floorVal,
-      apartment: apartmentVal,
+    body: JSON.stringify({
+      name: customerName,
+      phone: phone,
+      property: property.value,
+      district: district.value,
+      area: area.value,
+      street: street.value,
+      building: building.value,
+      floor: floor.value,
+      apartment: apartment.value,
       payment: paymentMethod,
-      notes: notesVal,
-      order: JSON.stringify(cart),
-      total
+      notes: notes.value,
+      order: cart.map(i=>`${i.product} × ${i.quantity}`).join(" | "),
+      total: total
     })
   });
 
-  /* ===== WhatsApp ===== */
+  /* ===== واتساب ===== */
   window.open(
-    `https://wa.me/201207772789?text=${encodeURIComponent(message)}`,
+    "https://wa.me/201207772789?text=" + encodeURIComponent(message),
     "_blank"
   );
 }
