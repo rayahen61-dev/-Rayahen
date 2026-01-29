@@ -223,7 +223,7 @@ body {
 
 <script>
   if(!localStorage.getItem("visited")){
-    alert("أهلاً بيك في محمصة رياحين 🌰");
+    alert("أهلاً بيك في محمصة الرياحين 🌰");
     localStorage.setItem("visited", "yes");
   }
   
@@ -1401,11 +1401,116 @@ function goToCheckout() {
   </button>
 </div>
 
+<!-- Nut Product 5 -->
+<div class="product-card bg-white rounded-2xl p-6 shadow-lg">
+  <!-- Product Image -->
+  <div class="mb-4 text-center">
+    <img
+      src="images (69).png"
+      alt=" تشكيلة مكسرات عادية"
+      class="w-32 h-32 mx-auto object-cover rounded-xl"
+    />
+  </div>
+
+  <!-- Product Name -->
+  <h4 class="text-2xl font-bold mb-2 text-center" style="color: var(--text-dark);">
+   تشكيلة مكسرات عادية
+  </h4>
+  <!-- Product Description -->
+  <p class="text-center mb-4" style="color: var(--text-gray);">
+    كاجو ولوز وفستق
+  </p>
+
+  <!-- Price -->
+  <div class="flex items-center justify-between mb-4">
+    <span class="text-2xl font-bold text-gold">
+      السعر: 1000 ج/كجم
+    </span>
+  </div>
+
+  <!-- Quantity -->
+  <div class="flex items-center gap-3 mb-4">
+    <label class="font-semibold" style="color: var(--text-dark);">
+      اضف الكمية (جرام):
+    </label>
+    <input
+      type="number"
+      min="100"
+      step="50"
+      value="100"
+      data-product="تشكيلة مكسرات عادية"
+      class="quantity-input border-2 rounded-lg px-3 py-2 w-32 font-bold text-center"
+      style="border-color: var(--gold);"
+    />
+  </div>
+
+  <!-- Add to Cart Button -->
+  <button
+    class="add-to-cart w-full gradient-gold text-white py-3 rounded-xl font-bold text-lg hover:shadow-xl transition transform hover:scale-105"
+    data-product=" تشكيلة مكسرات عادية"
+    data-price="1000"
+  >
+    إضافة للسلة 🛒
+  </button>
+</div>
+
+<!-- Nut Product 5 -->
+<div class="product-card bg-white rounded-2xl p-6 shadow-lg">
+  <!-- Product Image -->
+  <div class="mb-4 text-center">
+    <img
+      src="images (70).png"
+      alt=" تشكيلة مكسرات إكسترا"
+      class="w-32 h-32 mx-auto object-cover rounded-xl"
+    />
+  </div>
+
+  <!-- Product Name -->
+  <h4 class="text-2xl font-bold mb-2 text-center" style="color: var(--text-dark);">
+   تشكيلة مكسرات إكسترا
+  </h4>
+  <!-- Product Description -->
+  <p class="text-center mb-4" style="color: var(--text-gray);">
+    كاجو ولوز وفستق وبيكان ومكاديميا
+  </p>
+
+  <!-- Price -->
+  <div class="flex items-center justify-between mb-4">
+    <span class="text-2xl font-bold text-gold">
+      السعر: 1200 ج/كجم
+    </span>
+  </div>
+
+  <!-- Quantity -->
+  <div class="flex items-center gap-3 mb-4">
+    <label class="font-semibold" style="color: var(--text-dark);">
+      اضف الكمية (جرام):
+    </label>
+    <input
+      type="number"
+      min="100"
+      step="50"
+      value="100"
+      data-product="تشكيلة مكسرات إكسترا"
+      class="quantity-input border-2 rounded-lg px-3 py-2 w-32 font-bold text-center"
+      style="border-color: var(--gold);"
+    />
+  </div>
+
+  <!-- Add to Cart Button -->
+  <button
+    class="add-to-cart w-full gradient-gold text-white py-3 rounded-xl font-bold text-lg hover:shadow-xl transition transform hover:scale-105"
+    data-product=" تشكيلة مكسرات إكسترا"
+    data-price="1200"
+  >
+    إضافة للسلة 🛒
+  </button>
+</div>
+
 <!-- زر في الأعلى -->
      <class="quick-nav-btn bg-gradient-to-r from-yellow-600 to-yellow-700 text-white px-6 py-3 rounded-full font-bold text-lg shadow-lg transition transform hover:scale-105 hover:shadow-xl flex items-center gap-2">
   </a>
 </div>
-
 
 <!-- قسم المكسرات النيّة -->
 <section id="Raw-section" class="max-w-7xl mx-auto mb-20">
@@ -3496,4 +3601,3 @@ fetch(URL)
 
  </body>
  </html>
-
