@@ -102,6 +102,7 @@ input.error, select.error {
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
   <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
+  <style>@view-transition { navigation: auto; }</style>
  </head>
  <body class="h-full gradient-bg">
   <div class="w-full h-full overflow-auto py-8 px-4">
@@ -111,32 +112,66 @@ input.error, select.error {
      <h3 class="text-xl font-bold text-gray-800">👤 البيانات الشخصية</h3>
     </div>
     <div class="grid md:grid-cols-2 gap-4 mb-6">
-     <div><label class="block text-gray-700 font-semibold mb-2"> الاسم <span class="text-red-600">*</span> </label> <input type="text" id="name" class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-gray-50 transition-all" placeholder="أدخل الاسم الكامل">
+     <div><label class="block text-gray-700 font-semibold mb-2"> الاسم <span class="text-red-600">*</span> </label> <input type="text" id="name" class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-gray-50 transition-all">
      </div>
-     <div><label class="block text-gray-700 font-semibold mb-2"> رقم الهاتف <span class="text-red-600">*</span> </label> <input type="tel" id="phone" inputmode="numeric" class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-gray-50 transition-all" placeholder="01xxxxxxxxx">
+     <div><label class="block text-gray-700 font-semibold mb-2"> رقم الهاتف <span class="text-red-600">*</span> </label> <input type="tel" id="phone" inputmode="numeric" class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-gray-50 transition-all">
      </div>
     </div><!-- بيانات العقار -->
     <div class="section-title rounded-xl p-3 mb-4 mt-8">
      <h3 class="text-xl font-bold text-gray-800">🏠 بيانات العقار</h3>
+    </div><!-- نوع العقار - أزرار -->
+    <div class="mb-4"><label class="block text-gray-700 font-semibold mb-3">نوع العقار</label>
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="payment-btn border-3 border-gray-300 rounded-xl p-4 text-center cursor-pointer font-bold bg-gray-50" onclick="selectPropertyType('شقة', this)">
+       <div class="text-3xl mb-1">
+        🏢
+       </div>
+       <div class="text-base">
+        شقة
+       </div>
+      </div>
+      <div class="payment-btn border-3 border-gray-300 rounded-xl p-4 text-center cursor-pointer font-bold bg-gray-50" onclick="selectPropertyType('فيلا', this)">
+       <div class="text-3xl mb-1">
+        🏡
+       </div>
+       <div class="text-base">
+        فيلا
+       </div>
+      </div>
+      <div class="payment-btn border-3 border-gray-300 rounded-xl p-4 text-center cursor-pointer font-bold bg-gray-50" onclick="selectPropertyType('محل', this)">
+       <div class="text-3xl mb-1">
+        🏪
+       </div>
+       <div class="text-base">
+        محل
+       </div>
+      </div>
+      <div class="payment-btn border-3 border-gray-300 rounded-xl p-4 text-center cursor-pointer font-bold bg-gray-50" onclick="selectPropertyType('مكتب', this)">
+       <div class="text-3xl mb-1">
+        💼
+       </div>
+       <div class="text-base">
+        مكتب
+       </div>
+      </div>
+     </div><input type="hidden" id="propertyType" value="">
     </div>
     <div class="grid md:grid-cols-2 gap-4 mb-4">
-     <div><label class="block text-gray-700 font-semibold mb-2">نوع العقار</label> <select id="propertyType" class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-gray-50 transition-all"> <option value="">-- اختر نوع العقار --</option> <option value="شقة">شقة</option> <option value="فيلا">فيلا</option> <option value="مكتب">مكتب</option> <option value="محل">محل</option> </select>
+     <div><label class="block text-gray-700 font-semibold mb-2">الحي</label> <input type="text" id="neighborhood" class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-gray-50 transition-all">
      </div>
-     <div><label class="block text-gray-700 font-semibold mb-2">الحي</label> <input type="text" id="neighborhood" class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-gray-50 transition-all" placeholder="مثال: حي النزهة">
+     <div><label class="block text-gray-700 font-semibold mb-2">المنطقة</label> <input type="text" id="area" class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-gray-50 transition-all">
      </div>
     </div>
     <div class="grid md:grid-cols-2 gap-4 mb-4">
-     <div><label class="block text-gray-700 font-semibold mb-2">المنطقة</label> <input type="text" id="area" class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-gray-50 transition-all" placeholder="مثال: مدينة نصر">
+     <div><label class="block text-gray-700 font-semibold mb-2">اسم الشارع</label> <input type="text" id="streetName" class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-gray-50 transition-all">
      </div>
-     <div><label class="block text-gray-700 font-semibold mb-2">اسم الشارع</label> <input type="text" id="streetName" class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-gray-50 transition-all" placeholder="مثال: شارع الطيران">
+     <div><label class="block text-gray-700 font-semibold mb-2">رقم المبنى</label> <input type="text" id="buildingNumber" class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-gray-50 transition-all">
      </div>
     </div>
-    <div class="grid md:grid-cols-3 gap-4 mb-6">
-     <div><label class="block text-gray-700 font-semibold mb-2">رقم المبنى</label> <input type="text" id="buildingNumber" class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-gray-50 transition-all" placeholder="مثال: 15">
+    <div class="grid md:grid-cols-2 gap-4 mb-6">
+     <div><label class="block text-gray-700 font-semibold mb-2">الدور</label> <input type="text" id="floor" class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-gray-50 transition-all">
      </div>
-     <div><label class="block text-gray-700 font-semibold mb-2">الدور</label> <input type="text" id="floor" class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-gray-50 transition-all" placeholder="الدور الثالث">
-     </div>
-     <div><label class="block text-gray-700 font-semibold mb-2">رقم الشقة</label> <input type="text" id="apartmentNumber" class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-gray-50 transition-all" placeholder="5">
+     <div><label class="block text-gray-700 font-semibold mb-2">رقم الشقة</label> <input type="text" id="apartmentNumber" class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-gray-50 transition-all">
      </div>
     </div><!-- طريقة الدفع -->
     <div class="section-title rounded-xl p-3 mb-4 mt-8">
@@ -152,7 +187,8 @@ input.error, select.error {
       </div>
      </div>
      <div class="payment-btn instapay border-3 border-gray-300 rounded-xl p-4 text-center cursor-pointer font-bold" onclick="selectPayment('Instapay', this)" id="instapayOption">
-      <div class="mb-2"><span class="instapay-badge">in</span>
+      <div class="mb-2">
+       <span class="instapay-badge">in</span>
       </div>
       <div class="text-lg font-bold">
        Instapay
@@ -186,6 +222,19 @@ input.error, select.error {
      </div>
     </div><!-- زر الإرسال --> <button onclick="sendOrder()" class="w-full mt-8 py-4 bg-gradient-to-r from-green-500 to-green-600 text-white text-xl font-bold rounded-xl hover:from-green-600 hover:to-green-700 transition-all transform hover:scale-105 shadow-lg"> 📱 إرسال الطلب عبر واتساب </button>
    </div>
+
+   <div style="
+text-align:center;
+margin-top:14px;
+background:#f8f8f8;
+padding:12px;
+border-radius:12px;
+font-size:14px;
+">
+🚚 <strong>توصيل خلال ساعة واحدة </strong><br>
+🔄 استبدال خلال 24 ساعة في حالة وجود عيب
+</div>
+
   </div>
   <script>
     /* ===== قراءة السلة من localStorage ===== */
@@ -231,6 +280,21 @@ input.error, select.error {
 
     document.getElementById("totalPrice").textContent = total.toFixed(2);
 
+    /* ===== اختيار نوع العقار ===== */
+    let selectedPropertyType = "";
+
+    function selectPropertyType(type, element) {
+      selectedPropertyType = type;
+      document.getElementById("propertyType").value = type;
+      
+      // إزالة التفعيل من كل أزرار نوع العقار
+      const propertyButtons = element.parentElement.querySelectorAll('.payment-btn');
+      propertyButtons.forEach(btn => btn.classList.remove('active'));
+      
+      // تفعيل الزر المختار
+      element.classList.add('active');
+    }
+
     /* ===== اختيار طريقة الدفع ===== */
     let paymentMethod = "";
     let uploadedFile = null;
@@ -238,10 +302,11 @@ input.error, select.error {
     function selectPayment(method, element) {
       paymentMethod = method;
       
-      document.querySelectorAll('.payment-btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
+      // إزالة التفعيل من كل أزرار الدفع
+      document.getElementById('cashOption').classList.remove('active');
+      document.getElementById('instapayOption').classList.remove('active');
       
+      // تفعيل الزر المختار
       element.classList.add('active');
       
       const instaNote = document.getElementById("instaNote");
@@ -399,5 +464,5 @@ input.error, select.error {
       setTimeout(() => toast.remove(), 3000);
     }
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c5bc224239932f7',t:'MTc2OTcyMTQ2Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c63920e172bac32',t:'MTc2OTgwMzM4NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
