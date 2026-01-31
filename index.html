@@ -374,6 +374,24 @@ function toggleMenu(){
 
 </script>
  
+<script>
+document.querySelectorAll(".add-to-cart").forEach(button => {
+  button.addEventListener("click", () => {
+    const product = button.dataset.product;
+    const price = button.dataset.price;
+
+    const quantityInput = button
+      .closest(".product-card")
+      .querySelector(".quantity-input");
+
+    const quantity = quantityInput.value;
+
+    alert(
+      `تمت إضافة المنتج:\n${product}\nالكمية: ${quantity} جرام\nالسعر: ${price} ج/كجم`
+    );
+  });
+});
+</script>
  <body 
   
 <!-- ===== Header ===== -->
@@ -808,7 +826,7 @@ function toggleMenu(){
   <div class="mb-4 text-center">
     <img
       src="images (64).png"
-      alt="تمر صفاوي"
+      alt="تمر صفاوي "
       class="w-32 h-32 mx-auto object-cover rounded-xl"
     />
   </div>
@@ -838,7 +856,7 @@ function toggleMenu(){
       min="1"
       step="1"
       value="1"
-      data-product="تمر صفاوي"
+      data-product="تمر صفاوي "
       class="quantity-input border-2 rounded-lg px-3 py-2 w-32 font-bold text-center"
       style="border-color: var(--gold);"
     />
@@ -847,7 +865,7 @@ function toggleMenu(){
 <!-- Add to Cart Button -->
 <button
   class="add-to-cart w-full gradient-gold text-white py-3 rounded-xl font-bold text-lg hover:shadow-xl transition transform hover:scale-105"
-  data-product="تمر صفاوي"
+  data-product="تمر صفاوي "
   data-price="1100"
   data-unit="كرتونه"   <!-- <-- هنا أضفنا نوع الوحدة -->
   إضافة للسلة 🛒
@@ -863,14 +881,14 @@ function toggleMenu(){
   <div class="mb-4 text-center">
     <img
       src="images (65).png"
-      alt="تمر عجوة المدينة"
+      alt="تمر عجوة المدينه "
       class="w-32 h-32 mx-auto object-cover rounded-xl"
     />
   </div>
 
   <!-- Product Name -->
   <h4 class="text-2xl font-bold mb-2 text-center" style="color: var(--text-dark);">
- تمر عجوة المدينة </h4>
+ تمر عجوة المدينه </h4>
 
   <!-- Product Description -->
   <p class="text-center mb-4" style="color: var(--text-gray);">
@@ -893,7 +911,7 @@ function toggleMenu(){
       min="1"
       step="1"
       value="1"
-      data-product="تمر عجوة المدينة"
+      data-product="تمر عجوة المدينه "
       class="quantity-input border-2 rounded-lg px-3 py-2 w-32 font-bold text-center"
       style="border-color: var(--gold);"
     />
@@ -902,7 +920,7 @@ function toggleMenu(){
 <!-- Add to Cart Button -->
 <button
   class="add-to-cart w-full gradient-gold text-white py-3 rounded-xl font-bold text-lg hover:shadow-xl transition transform hover:scale-105"
-  data-product="تمر عجوة المدينة"
+  data-product="تمر عجوة المدينه "
   data-price="1720"
   data-unit="كرتونه"   <!-- <-- هنا أضفنا نوع الوحدة -->
   إضافة للسلة 🛒
@@ -972,18 +990,18 @@ function toggleMenu(){
   <div class="mb-4 text-center">
     <img
       src="images (67).png"
-      alt="تمر مجدول جامبو"
+      alt="تمر مجدول جامبو  "
       class="w-32 h-32 mx-auto object-cover rounded-xl"
     />
   </div>
 
   <!-- Product Name -->
   <h4 class="text-2xl font-bold mb-2 text-center" style="color: var(--text-dark);">
- تمر مجدول جامبو </h4>
+ تمر مجدول جامبو  </h4>
 
   <!-- Product Description -->
   <p class="text-center mb-4" style="color: var(--text-gray);">
-  كرتونه 5 كيلو</p>
+  كرتونه 3 كيلو</p>
 
   <!-- Price -->
   <div class="flex items-center justify-between mb-4">
@@ -1002,7 +1020,7 @@ function toggleMenu(){
       min="1"
       step="1"
       value="1"
-      data-product="تمر مجدول جامبو"
+      data-product="تمر مجدول جامبو "
       class="quantity-input border-2 rounded-lg px-3 py-2 w-32 font-bold text-center"
       style="border-color: var(--gold);"
     />
@@ -1011,7 +1029,7 @@ function toggleMenu(){
 <!-- Add to Cart Button -->
 <button
   class="add-to-cart w-full gradient-gold text-white py-3 rounded-xl font-bold text-lg hover:shadow-xl transition transform hover:scale-105"
-  data-product="تمر مجدول جامبو"
+  data-product="تمر مجدول جامبو "
   data-price="2770"
   data-unit="كرتونه"   <!-- <-- هنا أضفنا نوع الوحدة -->
   إضافة للسلة 🛒
@@ -2219,18 +2237,18 @@ function toggleMenu(){
   <div class="mb-4 text-center">
     <img
       src="images (6).jpg"
-      alt="تين تركي"
+      alt="تين تركي فاخر"
       class="w-32 h-32 mx-auto object-cover rounded-xl"
     />
   </div>
 
   <!-- Product Name -->
   <h4 class="text-2xl font-bold mb-2 text-center" style="color: var(--text-dark);">
- تين تركي  </h4>
+تين تركي فاخر </h4>
 
   <!-- Product Description -->
   <p class="text-center mb-4" style="color: var(--text-gray);">
-  تين تركي فاخر</p>
+تين تركي فاخر</p>
 
   <!-- Price -->
   <div class="flex items-center justify-between mb-4">
@@ -2249,7 +2267,7 @@ function toggleMenu(){
       min="100"
       step="50"
       value="100"
-      data-product="تين تركي"
+      data-product="تين تركي فاخر"
       class="quantity-input border-2 rounded-lg px-3 py-2 w-32 font-bold text-center"
       style="border-color: var(--gold);"
     />
@@ -2258,9 +2276,8 @@ function toggleMenu(){
   <!-- Add to Cart Button -->
   <button
     class="add-to-cart w-full gradient-gold text-white py-3 rounded-xl font-bold text-lg hover:shadow-xl transition transform hover:scale-105"
-    data-product="تين تركي"
-    data-price="990"
-  >
+      data-product="تين تركي فاخر"
+    data-price="990">
     إضافة للسلة 🛒
   </button>
 
@@ -2327,18 +2344,18 @@ function toggleMenu(){
   <div class="mb-4 text-center">
     <img
       src="images (55).jpg"
-      alt="تين "
+      alt="تين تركي عادي"
       class="w-32 h-32 mx-auto object-cover rounded-xl"
     />
   </div>
 
   <!-- Product Name -->
   <h4 class="text-2xl font-bold mb-2 text-center" style="color: var(--text-dark);">
- تين تركي   </h4>
+تين تركي عادي </h4>
 
   <!-- Product Description -->
   <p class="text-center mb-4" style="color: var(--text-gray);">
-  تين تركي  فاخر</p>
+ تين تركي عادي</p>
 
   <!-- Price -->
   <div class="flex items-center justify-between mb-4">
@@ -2357,7 +2374,7 @@ function toggleMenu(){
       min="100"
       step="50"
       value="100"
-      data-product="تين تركي"
+      data-product="تين تركي عادي"
       class="quantity-input border-2 rounded-lg px-3 py-2 w-32 font-bold text-center"
       style="border-color: var(--gold);"
     />
@@ -2366,7 +2383,7 @@ function toggleMenu(){
   <!-- Add to Cart Button -->
   <button
     class="add-to-cart w-full gradient-gold text-white py-3 rounded-xl font-bold text-lg hover:shadow-xl transition transform hover:scale-105"
-    data-product="تين تركي"
+    data-product="تين تركي عادي"
     data-price="890"
   >
     إضافة للسلة 🛒
@@ -2404,13 +2421,13 @@ function toggleMenu(){
   <!-- Quantity -->
   <div class="flex items-center gap-3 mb-4">
     <label class="font-semibold" style="color: var(--text-dark);">
-      اضف الكمية (جرام):
+      اضف العدد (عبوه):
     </label>
     <input
       type="number"
-      min="100"
-      step="50"
-      value="100"
+      min="1"
+      step="1"
+      value="1"
       data-product=" تين قرص السعيد"
       class="quantity-input border-2 rounded-lg px-3 py-2 w-32 font-bold text-center"
       style="border-color: var(--gold);"
@@ -2422,7 +2439,8 @@ function toggleMenu(){
     class="add-to-cart w-full gradient-gold text-white py-3 rounded-xl font-bold text-lg hover:shadow-xl transition transform hover:scale-105"
     data-product=" تين قرص السعيد"
     data-price="158"
-  >
+      data-unit="عبوه"   <!-- <-- هنا أضفنا نوع الوحدة -->
+  
     إضافة للسلة 🛒
   </button>
 
@@ -3646,6 +3664,7 @@ fetch(URL)
       container.appendChild(div);
     });
   });
+  
 </script>
 
 
