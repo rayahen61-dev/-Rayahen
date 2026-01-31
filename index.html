@@ -395,27 +395,113 @@ document.querySelectorAll(".add-to-cart").forEach(button => {
  <body 
   
 <!-- ===== Header ===== -->
-<header class="top-bar">
-  <div class="top-inner">
-
-    <!-- Left -->
-    <div class="left-icons">
-      <button class="icon-btn" onclick="toggleMenu()">☰</button>
+<html>
+ <head>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <header class="top-bar">
+   <div class="top-inner"><!-- Left -->
+    <div class="left-icons"><button class="icon-btn" onclick="toggleMenu()">☰</button> <button class="icon-btn" onclick="toggleSearch()">🔍</button>
+    </div><!-- Logo -->
+    <div class="logo">
+     Rayahen Roastery
+    </div><!-- Right -->
+    <div class="right-icons"><button id="cart-btn" class="cart-btn"> 🛒 <span id="cart-count">0</span> </button>
     </div>
+   </div><!-- Search Box (مخفي افتراضياً) -->
+   <div id="searchBox" class="search-box" style="display: none;"><input type="text" id="searchInput" placeholder="ابحث عن المنتجات..." class="search-input">
+   </div>
+  </header>
+  <style>
+.search-box {
+  padding: 0 20px 15px 20px;
+  animation: slideDown 0.3s ease;
+}
 
-    <!-- Logo -->
-    <div class="logo">Rayahen Roastery</div>
+.search-input {
+  width: 100%;
+  padding: 12px 45px 12px 20px;
+  border: 2px solid var(--gold);
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: right;
+  background: white;
+  color: #333;
+  transition: all 0.3s ease;
+}
 
-    <!-- Right -->
-    <div class="right-icons">
-      <button id="cart-btn" class="cart-btn">
-        🛒
-        <span id="cart-count">0</span>
-      </button>
-    </div>
+.search-input:focus {
+  outline: none;
+  border-color: #6a1b9a;
+  box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.1);
+}
 
-</header>
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
+  <script>
+// ف��ح/إغلاق صندوق البحث
+function toggleSearch() {
+  const searchBox = document.getElementById('searchBox');
+  const searchInput = document.getElementById('searchInput');
+  
+  if (searchBox.style.display === 'none') {
+    searchBox.style.display = 'block';
+    setTimeout(() => searchInput.focus(), 100);
+  } else {
+    searchBox.style.display = 'none';
+    searchInput.value = '';
+    // إظهار كل المنتجات
+    document.querySelectorAll('.product-card').forEach(card => {
+      card.style.display = 'block';
+    });
+  }
+}
 
+// البحث في المنتجات - يشتغل مباشرة
+document.addEventListener('input', function(e) {
+  if (e.target && e.target.id === 'searchInput') {
+    const searchTerm = e.target.value.trim().toLowerCase();
+    const productCards = document.querySelectorAll('.product-card');
+    
+    let foundCount = 0;
+    productCards.forEach(card => {
+      const productName = card.querySelector('h4') ? card.querySelector('h4').textContent.toLowerCase() : '';
+      const productDesc = card.querySelector('p') ? card.querySelector('p').textContent.toLowerCase() : '';
+      
+      if (searchTerm === '' || productName.includes(searchTerm) || productDesc.includes(searchTerm)) {
+        card.style.display = '';
+        card.style.opacity = '1';
+        card.style.visibility = 'visible';
+        card.style.height = 'auto';
+        foundCount++;
+      } else {
+        card.style.display = 'none';
+        card.style.opacity = '0';
+        card.style.visibility = 'hidden';
+        card.style.height = '0';
+      }
+    });
+    
+    console.log('بحث عن:', searchTerm, '- النتائج:', foundCount);
+  }
+});
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c6620a32507e215',t:'MTc2OTgzMDE5NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
 
 <!-- ===== Side Menu ===== -->
 <div id="sideMenu" class="side-menu">
